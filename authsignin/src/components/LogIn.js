@@ -15,8 +15,7 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/api/login', { email, password });
 
       // Store token and user info in localStorage
-      localStorage.setItem('token', response.data.token);
-        
+      localStorage.setItem('token', response.data.token); 
       localStorage.setItem('email', email);  
 
       // Navigate to profile page

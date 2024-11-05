@@ -4,14 +4,14 @@ import Logo from '../assets/Logo.png';
 import Image from '../assets/Image.png';
 import GoogleIcon from '../assets/Google.png';
 import { GoogleLogin } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   
-  // Initialize useNavigate for programmatic navigation
+  // Initialize useNavigate navigating between components
   const navigate = useNavigate();
 
   // Handle form input changes
@@ -28,8 +28,7 @@ const SignUpPage = () => {
       setError('');
 
       // After successful registration, navigate to the login page
-      navigate('/login'); // Redirect to the login page
-
+      navigate('/login'); 
     } catch (error) {
       setError(error.response?.data?.message || 'Registration failed');
       setMessage('');
@@ -43,7 +42,7 @@ const SignUpPage = () => {
       const { data } = await axios.post('http://localhost:5000/api/google-login', { token: credential });
       setMessage('Google login successful!');
       setError('');
-      navigate('/login'); // Redirect to the login page after successful Google login
+      navigate('/login'); 
     } catch (err) {
       console.log("Error details:", err);
       setError('Google login failed, please try again.');
@@ -58,64 +57,65 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 p-4">
-      <div className="relative w-full max-w-4xl bg-white rounded-lg shadow-lg flex h-5/6">
-        <img src={Logo} alt="Logo" className="absolute top-4 left-4 w-20 h-12" />
+    <div className="flex items-center justify-center min-h-screen bg-gray-900 p-4 h-screen overflow-hidden">
+  <div className="relative w-full max-w-4xl bg-gradient-to-r from-white to-gray-100 rounded-lg shadow-lg flex h-5/6">
+    <img src={Logo} alt="Logo" className="absolute top-4 left-4 w-10 sm:w-12 md:w-14 lg:w-16 h-auto" />
 
-        <div className="w-1/2 p-6">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-semibold text-gray-800">SIGN UP</h1>
-            <p className="text-gray-500 mt-1">Create an account to get started.</p>
-          </div>
-
-          {/* Continue with Google */}
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            useOneTap
-            shape="pill"
-            theme="outline"
-            text="continue_with"
-            width="full"
-            logo_alignment="left"
-            className="flex items-center justify-center w-full py-2 mb-3 border border-gray-300 rounded hover:bg-gray-100"
-          >
-            <img src={GoogleIcon} alt="Google Icon" className="w-5 h-5 mr-2" />
-            Continue with Google
-          </GoogleLogin>
-
-          <div className="flex items-center my-3">
-            <span className="border-t border-gray-300 flex-grow"></span>
-            <span className="px-3 text-gray-400">Or</span>
-            <span className="border-t border-gray-300 flex-grow"></span>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <input type="text" name="name" placeholder="Name" className="w-full p-2 border border-gray-300 rounded focus:outline-none" onChange={handleChange} required />
-            <input type="email" name="email" placeholder="Email" className="w-full p-2 border border-gray-300 rounded focus:outline-none" onChange={handleChange} required />
-            <input type="password" name="password" placeholder="Password" className="w-full p-2 border border-gray-300 rounded focus:outline-none" onChange={handleChange} required />
-
-            <div className="flex items-center mt-2">
-              <input type="checkbox" id="rememberMe" className="mr-2" />
-              <label htmlFor="rememberMe" className="text-gray-600 text-sm">Remember Me</label>
-            </div>
-
-            <button type="submit" className="w-full py-2 bg-black text-white rounded hover:bg-gray-800">Register</button>
-          </form>
-
-          <p className="text-center mt-4 text-gray-600 text-sm">
-            Already have an account? <a href="/login" className="text-yellow-500 hover:underline">Log in</a>
-          </p>
-        </div>
-
-        <div className="w-1/2 flex items-center justify-center bg-gradient-to-r from-gray-900 to-gray-700 rounded-r-lg">
-          <img src={Image} alt="Illustration" className="w-full h-full object-cover rounded-r-lg" />
-        </div>
+    <div className="w-1/2 flex flex-col justify-center items-center px-10">
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-semibold text-gray-900">SIGN UP</h1>
+        <p className="text-gray-600 mt-1">Create an account to get started.</p>
       </div>
 
-      {message && <div className="fixed bottom-4 left-4 bg-green-500 text-white py-2 px-4 rounded">{message}</div>}
-      {error && <div className="fixed bottom-4 left-4 bg-red-500 text-white py-2 px-4 rounded">{error}</div>}
+      {/* Continue with Google */}
+      <GoogleLogin
+        onSuccess={handleGoogleSuccess}
+        onError={handleGoogleError}
+        useOneTap
+        shape="pill"
+        theme="outline"
+        text="continue_with"
+        width="full"
+        logo_alignment="left"
+        className="flex items-center justify-center w-full py-2 mb-3 border border-gray-300 rounded-lg hover:bg-gray-200"
+      >
+        <img src={GoogleIcon} alt="Google Icon" className="w-5 h-5 mr-2" />
+        Continue with Google
+      </GoogleLogin>
+
+      <div className="flex items-center my-3 w-full">
+        <span className="border-t border-gray-300 flex-grow"></span>
+        <span className="px-3 text-gray-400">Or</span>
+        <span className="border-t border-gray-300 flex-grow"></span>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-3 w-full">
+        <input type="text" name="name" placeholder="Name" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none" onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none" onChange={handleChange} required />
+        <input type="password" name="password" placeholder="Password" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none" onChange={handleChange} required />
+
+        <div className="flex items-center mt-2">
+          <input type="checkbox" id="rememberMe" className="mr-2" />
+          <label htmlFor="rememberMe" className="text-gray-600 text-sm">Remember Me</label>
+        </div>
+
+        <button type="submit" className="w-full py-2 bg-black text-white rounded-full hover:bg-gray-800">Register</button>
+      </form>
+
+      <p className="text-center mt-4 text-gray-600 text-sm">
+        Already have an account? <a href="/login" className="text-yellow-500 hover:underline">Log in</a>
+      </p>
     </div>
+
+    <div className="w-1/2 flex items-center justify-center bg-gradient-to-r from-gray-900 to-gray-700 rounded-r-lg">
+      <img src={Image} alt="Illustration" className="w-full h-full object-cover rounded-r-lg" />
+    </div>
+  </div>
+
+  {message && <div className="fixed bottom-4 left-4 bg-green-500 text-white py-2 px-4 rounded">{message}</div>}
+  {error && <div className="fixed bottom-4 left-4 bg-red-500 text-white py-2 px-4 rounded">{error}</div>}
+</div>
+
   );
 };
 
