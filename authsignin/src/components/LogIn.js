@@ -16,8 +16,8 @@ const Login = () => {
 
       // Store token and user info in localStorage
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('name', response.data.name);  // Assuming the response contains 'name' and 'email'
-      localStorage.setItem('email', email);  // Assuming the login only requires email and password
+        
+      localStorage.setItem('email', email);  
 
       // Navigate to profile page
       navigate('/profile'); 

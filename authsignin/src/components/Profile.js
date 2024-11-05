@@ -31,7 +31,7 @@ const Profile = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-900 p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
         <h1 className="text-3xl font-semibold text-gray-800 mb-4">Profile</h1>
-        <p className="text-gray-600"><strong>Name:</strong> {user.name}</p>
+        
         <p className="text-gray-600"><strong>Email:</strong> {user.email}</p>
 
         <h3 className="text-3xl font-semibold text-gray-800 mb-4">Hooray, login Successful!!!</h3>
