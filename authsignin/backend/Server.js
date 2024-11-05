@@ -59,8 +59,9 @@ app.post('/api/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const user = results[0]; // Get the user from the results
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const user = results[0]; 
+    // Check if the user was registered with a password
+    const isPasswordValid = user.password ? await bcrypt.compare(password, user.password) : true;
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid email or password' });
@@ -80,8 +81,8 @@ app.post('/api/google-login', async (req, res) => {
     // Verify the token with Google
     const ticket = await client.verifyIdToken({
       idToken: token,
-      // CLIENT_ID from google console
-      audience: '500919968051-vk45pf1l94rmbmul66q6cvd3ipi1f6p5.apps.googleusercontent.com', 
+      // CLIENT_ID from Google console
+      audience: '500919968051-vk45pf1l94rmbmul66q6cvd3ipi1f6p5.apps.googleusercontent.com',
     });
 
     const payload = ticket.getPayload();
@@ -96,8 +97,9 @@ app.post('/api/google-login', async (req, res) => {
 
       if (!user) {
         // If the user doesn't exist, create a new record
-        const query = 'INSERT INTO users (name, email) VALUES (?, ?)';
-        db.query(query, [payload.name, email], (err, results) => {
+        const insertQuery = 'INSERT INTO users (name, email) VALUES (?, ?)';
+        
+        db.query(insertQuery, [payload.name, email], (err, results) => {
           if (err) return res.status(500).json({ message: 'Database error', err });
 
           // Generate the JWT token after inserting the new user
@@ -115,6 +117,7 @@ app.post('/api/google-login', async (req, res) => {
     res.status(500).json({ message: 'Google login failed' });
   }
 });
+
 
 // Start the server
 const PORT = 5000;
