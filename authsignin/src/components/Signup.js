@@ -3,11 +3,16 @@ import axios from 'axios';
 import Logo from '../assets/Logo.png';
 import Image from '../assets/Image.png';
 import GoogleIcon from '../assets/Google.png';
+import { GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  
+  // Initialize useNavigate for programmatic navigation
+  const navigate = useNavigate();
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -20,11 +25,36 @@ const SignUpPage = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/register', formData);
       setMessage('Registration successful!');
-      setError(''); // Clear any previous error messages
+      setError('');
+
+      // After successful registration, navigate to the login page
+      navigate('/login'); // Redirect to the login page
+
     } catch (error) {
       setError(error.response?.data?.message || 'Registration failed');
-      setMessage(''); // Clear any previous success messages
+      setMessage('');
     }
+  };
+
+  // Handle Google OAuth success
+  const handleGoogleSuccess = async (response) => {
+    try {
+      const { credential } = response; // Google token
+      const { data } = await axios.post('http://localhost:5000/api/google-login', { token: credential });
+      setMessage('Google login successful!');
+      setError('');
+      navigate('/login'); // Redirect to the login page after successful Google login
+    } catch (err) {
+      console.log("Error details:", err);
+      setError('Google login failed, please try again.');
+      setMessage('');
+    }
+  };
+
+  // Handle Google OAuth error
+  const handleGoogleError = (error) => {
+    setError('Google login failed, please try again.');
+    setMessage('');
   };
 
   return (
@@ -38,11 +68,21 @@ const SignUpPage = () => {
             <p className="text-gray-500 mt-1">Create an account to get started.</p>
           </div>
 
-          {/* Placeholder Google Button */}
-          <button className="flex items-center justify-center w-full py-2 mb-3 border border-gray-300 rounded hover:bg-gray-100">
+          {/* Continue with Google */}
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            useOneTap
+            shape="pill"
+            theme="outline"
+            text="continue_with"
+            width="full"
+            logo_alignment="left"
+            className="flex items-center justify-center w-full py-2 mb-3 border border-gray-300 rounded hover:bg-gray-100"
+          >
             <img src={GoogleIcon} alt="Google Icon" className="w-5 h-5 mr-2" />
             Continue with Google
-          </button>
+          </GoogleLogin>
 
           <div className="flex items-center my-3">
             <span className="border-t border-gray-300 flex-grow"></span>
