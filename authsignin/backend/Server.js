@@ -6,15 +6,16 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const { OAuth2Client } = require('google-auth-library');
 
-require('dotenv').config(); // Load environment variables
+//require('dotenv').config(); 
 
-const jwtSecret = process.env.JWT_SECRET_KEY; // Access the secret key from .env
+const jwtSecret = 'securesecretkey798mybrainisfried'; 
+console.log('JWT Secret:', jwtSecret);
 
 const app = express();
-app.use(cors()); // Enable CORS for all routes
-app.use(bodyParser.json()); // Parse JSON request bodies
+app.use(cors()); 
+app.use(bodyParser.json()); 
 
-// Set up Google OAuth client
+// Set up Google OAuth client from google console
 const client = new OAuth2Client('500919968051-vk45pf1l94rmbmul66q6cvd3ipi1f6p5.apps.googleusercontent.com'); // Replace with your Google OAuth 2.0 Client ID
 
 // Set up SQL connection
